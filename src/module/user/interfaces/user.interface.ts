@@ -4,5 +4,7 @@ import { BaseResponse } from '../../../dto/base.response';
 export interface UserInterface {
   findAll(): Promise<User[]>;
 
-  createUser(user: User): BaseResponse;
+  createUser(user: User): Promise<BaseResponse>;
+
+  login(user: User): Promise<BaseResponse>;
 }

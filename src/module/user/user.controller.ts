@@ -30,7 +30,7 @@ export class UserController {
 
   @Get('/test')
   async test(): Promise<User[]> {
-    this.log.info('some log %s %n', 'hello world', 23);
+    this.log.error('some log %s %n', 'hello world', 23);
     return this.userService.findAll();
   }
 
@@ -40,7 +40,12 @@ export class UserController {
   }
 
   @Post('/create')
-  create(@Body() body): BaseResponse {
-    return this.userService.createUser(body);
+  async create(@Body() body): Promise<BaseResponse> {
+    return await this.userService.createUser(body);
+  }
+
+  @Post('/login')
+  async login(@Body() body): Promise<BaseResponse> {
+    return await this.userService.login(body);
   }
 }

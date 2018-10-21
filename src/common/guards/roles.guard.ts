@@ -6,6 +6,8 @@ export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {
   }
 
+  // TODO:完成jwt和身份证权证的守卫
+  // https://docs.nestjs.com/guards
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles) {

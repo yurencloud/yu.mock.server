@@ -1,5 +1,9 @@
 import { LoggerService } from '@nestjs/common';
 import { configure, getLogger, Configuration } from 'log4js';
+import { ConfigService } from '../config/config.service';
+
+const config = new ConfigService();
+
 configure(
   {
     appenders: {
@@ -16,7 +20,7 @@ configure(
       },
     },
     categories: {
-      default: { appenders: ['file', 'out'], level: 'info' },
+      default: { appenders: ['file', 'out'], level: config.get('LOG_LEVEL') },
     },
   },
 );
@@ -27,8 +31,11 @@ export class Logger implements LoggerService {
   log(message: string, ...args: any[]) {
     logger.info(message, ...args);
   }
-  error(message: string, trace: string, ...args: any[]) {
+
+  error(message: string, ...args: any[]) {
+    // 先报错，再打印路径
     logger.error(message, ...args);
+    console.trace();
   }
   warn(message: string, ...args: any[]) {
     logger.warn(message, ...args);
