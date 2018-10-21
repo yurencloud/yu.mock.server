@@ -15,6 +15,8 @@ import { TransformInterceptor } from '../../common/interceptors/transform.interc
 import { ParseIntPipe } from '../../common/pipes/parse-int.pipe';
 import { UserService } from './user.service';
 import { User } from '../../entity/user.entity';
+import { BaseResponse } from '../../dto/base.response';
+import { Logger } from '../../common/log/logger.log';
 
 @Catch()
 @Controller('user')
@@ -24,8 +26,21 @@ export class UserController {
   constructor(private readonly userService: UserService) {
   }
 
-  @Get()
+  private readonly log: Logger = new Logger();
+
+  @Get('/test')
+  async test(): Promise<User[]> {
+    this.log.info('some log %s %n', 'hello world', 23);
+    return this.userService.findAll();
+  }
+
+  @Get('/all')
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
+  }
+
+  @Post('/create')
+  create(@Body() body): BaseResponse {
+    return this.userService.createUser(body);
   }
 }

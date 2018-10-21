@@ -52,7 +52,9 @@
     ],
     "promise-function-async": [
       false
-    ]
+    ],
+    "no-trailing-whitespace": false,
+    "no-console": false
   },
   "rulesDirectory": []
 }

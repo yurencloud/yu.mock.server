@@ -1,4 +1,6 @@
 ormconfig.json
+prod.env
+ormconfig.json
 
 # Created by .ignore support plugin (hsz.mobi)
 ### OSX template

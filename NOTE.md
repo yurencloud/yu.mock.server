@@ -29,3 +29,22 @@ const app = await NestFactory.create(AppModule);
     "lib": [ "es2015" ],
     }
 ```
+
+#### 4.tslint修改建议
+```
+    "promise-function-async": [
+      false
+    ],
+    "no-trailing-whitespace": false
+```
+
+#### 4.log日志模块使用
+```
+private readonly log: Logger = new Logger();
+
+this.log.error('error')
+```
+
+log4js配置中的file和dateFile，file是根据日志文件大小重新创建新日志，而dateFile是根据日志文件日期来重新创建，二者选其一就可以
+
+占位符，是使用node的format,比如%s, %d等，[参考这](https://nodejs.org/api/util.html#util_util_format_format_args)
