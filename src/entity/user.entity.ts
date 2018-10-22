@@ -7,20 +7,17 @@ export class User {
   id: number;
 
   @IsNotEmpty()
-  @Length(5, 20)
-  @Column({ length: 64 })
-  username: string;
-
-  @IsNotEmpty()
   @Length(6, 20)
   @Column()
   password: string;
 
-  @Column({ length: 64, default: '/img/default.png' })
-  avatar: string;
+  @IsNotEmpty()
+  @IsEmail()
+  @Column()
+  email: string;
 
-  @Column({ length: 64 })
-  nickname: string;
+  @Column()
+  phone: string;
 
   @Column({ type: 'datetime' })
   lastPasswordResetDate: Date;

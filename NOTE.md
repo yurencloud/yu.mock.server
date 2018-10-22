@@ -48,3 +48,7 @@ this.log.error('error')
 log4js配置中的file和dateFile，file是根据日志文件大小重新创建新日志，而dateFile是根据日志文件日期来重新创建，二者选其一就可以
 
 占位符，是使用node的format,比如%s, %d等，[参考这](https://nodejs.org/api/util.html#util_util_format_format_args)
+
+#### 5.debug使用
+先创建Attach node or chrome的debug，并监听9229
+接着使用npm run start:debug来启动debug，ws会暴露在9229

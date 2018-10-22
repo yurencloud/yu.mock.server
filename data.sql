@@ -72,10 +72,10 @@ values
   (1, 'ROLE_ADMIN'),
   (2, 'ROLE_USER');
 
-insert into user_role (user_id, role_id)
+insert into user_role (id, user_id, role_id)
 values
-  (1, 1),
-  (2, 2);
+  (1, 1, 1),
+  (2, 2, 2);
 
 insert into account (id, email, phone)
 values

@@ -8,9 +8,11 @@ export class LoggingInterceptor implements NestInterceptor {
     context: ExecutionContext,
     call$: Observable<any>,
   ): Observable<any> {
-    console.log('Before...');
-
-    const now = Date.now();
-    return call$.pipe(tap(() => console.log(`After... ${Date.now() - now}ms`)));
+    const request = context.switchToHttp().getRequest();
+    if (request.user && !request.session.user) {
+      request.session.user = request.user;
+    }
+    return call$.pipe(tap(() => {
+    }));
   }
 }

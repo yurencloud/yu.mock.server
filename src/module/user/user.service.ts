@@ -8,8 +8,7 @@ import { ResponseCode } from '../../constant/response-code';
 import { validate } from 'class-validator';
 import { Logger } from '../../common/log/logger.log';
 import * as bcrypt from 'bcrypt';
-import { ConfigService } from '../../common/config/config.service';
-import { AuthService } from '../auth/auth.service';
+import { TokenService } from '../../common/guards/token.service';
 
 @Injectable()
 export class UserService implements UserInterface {
@@ -17,8 +16,7 @@ export class UserService implements UserInterface {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly log: Logger,
-    private readonly authService: AuthService,
-    private readonly config: ConfigService,
+    private readonly tokenService: TokenService,
   ) {
   }
 
@@ -28,8 +26,7 @@ export class UserService implements UserInterface {
 
   public async createUser(body: any): Promise<BaseResponse> {
     const user = new User();
-    user.username = body.username;
-    user.password = body.password;
+    Object.assign(user, body);
 
     validate(user).then(errors => {
       if (errors.length > 0) {
@@ -40,16 +37,8 @@ export class UserService implements UserInterface {
       }
     });
 
-    // 校验用户名：只能输入5-20个以字母开头、可带数字、“_”、“.”的字串
-    if (!/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/.test(user.username)) {
-      return new BaseResponse({
-        code: ResponseCode.VALIDATION_FAILED.code,
-        msg: 'username must have 5-20 characters and it can include "_","."',
-      });
-    }
-
     // 判断用户是否已经存在
-    const findUser = await this.userRepository.findOne({ username: user.username });
+    const findUser = await this.userRepository.findOne({ email: user.email });
     if (findUser) {
       return new BaseResponse(ResponseCode.USER_EXISTED);
     }
@@ -68,13 +57,15 @@ export class UserService implements UserInterface {
 
   async login(body: any): Promise<BaseResponse> {
     // 判断用户是否已经存在
-    const findUser = await this.userRepository.findOne({ username: body.username });
+    const findUser = await this.userRepository.findOne({ email: body.email });
     if (findUser) {
       const isSame = bcrypt.compareSync(body.password, findUser.password);
       if (isSame) {
-        console.log(this.authService.createToken(findUser));
+        const token = this.tokenService.sign(findUser);
+        return new BaseResponse(ResponseCode.SUCCESS, token);
+      } else {
+        return new BaseResponse(ResponseCode.LOGIN_FAILED);
       }
-      return new BaseResponse(ResponseCode.SUCCESS);
     } else {
       return new BaseResponse(ResponseCode.LOGIN_FAILED);
     }
