@@ -6,6 +6,7 @@ import { Connection } from 'typeorm';
 import { CatsModule } from './module/cats/cats.module';
 import { UserModule } from './module/user/user.module';
 import { ConfigModule } from './common/config/config.module';
+import { TokenService } from './common/guards/token.service';
 
 @Module({
   imports: [

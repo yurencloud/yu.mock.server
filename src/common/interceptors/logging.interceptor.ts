@@ -8,10 +8,6 @@ export class LoggingInterceptor implements NestInterceptor {
     context: ExecutionContext,
     call$: Observable<any>,
   ): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    if (request.user && !request.session.user) {
-      request.session.user = request.user;
-    }
     return call$.pipe(tap(() => {
     }));
   }

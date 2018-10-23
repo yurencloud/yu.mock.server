@@ -5,13 +5,10 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class UserRole {
+export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int')
-  userId: number;
-
-  @Column('int')
-  roleId: number;
+  @Column()
+  name: string;
 }

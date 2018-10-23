@@ -6,10 +6,11 @@ import { User } from '../../entity/user.entity';
 import { Logger } from '../../common/log/logger.log';
 import { ConfigService } from '../../common/config/config.service';
 import { TokenService } from '../../common/guards/token.service';
+import { UserRole } from '../../entity/userRole.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserRole]),
   ],
   controllers: [UserController],
   providers: [UserService, TokenService, Logger, ConfigService],

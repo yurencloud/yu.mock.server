@@ -16,22 +16,23 @@ import { ParseIntPipe } from '../../common/pipes/parse-int.pipe';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './interfaces/cat.interface';
+import { AccessGuard } from '../../common/guards/access.guard';
 
 @Catch()
 @Controller('cats')
-@UseGuards(RolesGuard)
+@UseGuards(AccessGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {
   }
 
   @Post()
-  // @Roles('admin')
   async create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
   }
 
   @Get()
+  @Roles('USER', 'ADMIN')
   async findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
   }

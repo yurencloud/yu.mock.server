@@ -11,21 +11,29 @@ import { TransformInterceptor } from '../../common/interceptors/transform.interc
 import { UserService } from './user.service';
 import { User } from '../../entity/user.entity';
 import { BaseResponse } from '../../dto/base.response';
-import { Logger } from '../../common/log/logger.log';
+import { UserRole } from '../../entity/userRole.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Role } from '../../entity/role.entity';
 
 @Catch()
 @Controller('user')
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    @InjectRepository(UserRole) private readonly userRoleRepository: Repository<UserRole>,
+  ) {
   }
 
-  private readonly log: Logger = new Logger();
-
   @Get('/test')
-  async test(): Promise<User[]> {
-    this.log.info('some log %s %n', 'hello world', 23);
-    return this.userService.findAll();
+  async test(): Promise<any> {
+    const data = await this.userRoleRepository
+      .createQueryBuilder('user_role')
+      .leftJoinAndMapMany('user_role.roles', 'role', 'role', 'role.id = user_role.roleId')
+      .where('user_role.userId = :id', { id: 1 })
+      .getOne();
+    return data;
   }
 
   @Get('/all')

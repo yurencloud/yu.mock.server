@@ -3,12 +3,18 @@ import {
   Column,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Role } from './role.entity';
 
 @Entity()
-export class Role {
+export class UserRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column('int')
+  userId: number;
+
+  @Column('int')
+  roleId: number;
+
+  roles: Role[];
 }

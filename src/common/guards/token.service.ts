@@ -10,7 +10,7 @@ export class TokenService {
         email: user.email,
         roles: user.roles,
       },
-      this.getSecretKey({
+      TokenService.getSecretKey({
         id: user.id,
         email: user.email,
         roles: user.roles,
@@ -23,14 +23,14 @@ export class TokenService {
 
   verify(token: string) {
     const data: any = decode(token);
-    return verify(token, this.getSecretKey(data));
+    return verify(token, TokenService.getSecretKey(data));
   }
 
   decode(token: string) {
     return decode(token);
   }
 
-  getSecretKey(data: any) {
+  static getSecretKey(data: any) {
     return 'secretKey' +
       (data ? (
         '$' + data.id +

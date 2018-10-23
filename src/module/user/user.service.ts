@@ -9,12 +9,14 @@ import { validate } from 'class-validator';
 import { Logger } from '../../common/log/logger.log';
 import * as bcrypt from 'bcrypt';
 import { TokenService } from '../../common/guards/token.service';
+import { UserRole } from '../../entity/userRole.entity';
 
 @Injectable()
 export class UserService implements UserInterface {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserRole) private readonly userRoleRepository: Repository<UserRole>,
     private readonly log: Logger,
     private readonly tokenService: TokenService,
   ) {
@@ -61,7 +63,15 @@ export class UserService implements UserInterface {
     if (findUser) {
       const isSame = bcrypt.compareSync(body.password, findUser.password);
       if (isSame) {
-        const token = this.tokenService.sign(findUser);
+        const data = await this.userRoleRepository
+          .createQueryBuilder('user_role')
+          .leftJoinAndMapMany('user_role.roles', 'role', 'role', 'role.id = user_role.roleId')
+          .where('user_role.userId = :id', { id: findUser.id })
+          .getOne();
+        const roles: string[] = [];
+        // @ts-ignore
+        data.roles.forEach(role => roles.push(role.name));
+        const token = this.tokenService.sign({ ...findUser, roles });
         return new BaseResponse(ResponseCode.SUCCESS, token);
       } else {
         return new BaseResponse(ResponseCode.LOGIN_FAILED);
