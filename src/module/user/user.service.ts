@@ -39,11 +39,11 @@ export class UserService implements UserInterface {
     await this.userRoleRepository.insert(userRole);
   }
 
-  async login(body: any): Promise<string> {
+  async login(user: User): Promise<string> {
     // 判断用户是否已经存在
-    const findUser = await this.userRepository.findOne({ email: body.email });
+    const findUser = await this.userRepository.findOne({ email: user.email });
     if (findUser) {
-      const isSame = bcrypt.compareSync(body.password, findUser.password);
+      const isSame = bcrypt.compareSync(user.password, findUser.password);
       if (isSame) {
         const data = await this.userRoleRepository
           .createQueryBuilder('user_role')
