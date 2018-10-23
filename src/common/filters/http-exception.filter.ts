@@ -2,21 +2,37 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  HttpException,
+  UnauthorizedException,
+  HttpStatus,
 } from '@nestjs/common';
+import { AppError } from '../error/AppError';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost): any {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
-    const statusCode = exception.getStatus();
+    const res = ctx.getResponse();
 
-    response.status(statusCode).json({
-      statusCode,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    if (exception instanceof AppError) {
+      return res.status(exception.httpStatus).json({
+        errorCode: exception.errorCode,
+        errorMsg: exception.errorMessage,
+        usrMsg: exception.userMessage,
+        httpCode: exception.httpStatus,
+      });
+    } else if (exception instanceof UnauthorizedException) {
+      console.log(exception.message);
+      console.error(exception.stack);
+      return res.status(HttpStatus.UNAUTHORIZED).json(exception.message);
+    } else if (exception.status === 403) {
+      return res.status(HttpStatus.FORBIDDEN).json(exception.message);
+    }
+
+    else {
+      console.error(exception.message);
+      console.error(exception.stack);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+    }
   }
+
 }

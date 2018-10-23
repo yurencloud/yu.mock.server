@@ -3,13 +3,13 @@ import { User } from '../../entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserInterface } from './interfaces/user.interface';
-import { BaseResponse } from '../../dto/base.response';
-import { ResponseCode } from '../../constant/response-code';
 import { validate } from 'class-validator';
 import { Logger } from '../../common/log/logger.log';
 import * as bcrypt from 'bcrypt';
 import { TokenService } from '../../common/guards/token.service';
 import { UserRole } from '../../entity/userRole.entity';
+import { AppError } from '../../common/error/AppError';
+import { AppErrorTypeEnum } from '../../common/error/AppErrorTypeEnum';
 
 @Injectable()
 export class UserService implements UserInterface {
@@ -26,38 +26,20 @@ export class UserService implements UserInterface {
     return await this.userRepository.find();
   }
 
-  public async createUser(body: any): Promise<BaseResponse> {
-    const user = new User();
-    Object.assign(user, body);
-
-    validate(user).then(errors => {
-      if (errors.length > 0) {
-        this.log.error('validation failed. errors: %j', errors);
-        return new BaseResponse(ResponseCode.VALIDATION_FAILED, errors);
-      } else {
-        this.log.info('validation success');
-      }
-    });
-
+  public async createUser(user: User) {
     // 判断用户是否已经存在
     const findUser = await this.userRepository.findOne({ email: user.email });
-    if (findUser) {
-      return new BaseResponse(ResponseCode.USER_EXISTED);
-    }
-
+    if (findUser) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
     // 密码加密
     user.password = await bcrypt.hash(user.password, 10);
-
     const result = await this.userRepository.insert(user);
-    if (!result) {
-      this.log.error('database insert errors');
-      return new BaseResponse(ResponseCode.FAIL);
-    }
-
-    return new BaseResponse(ResponseCode.SUCCESS);
+    const userRole = new UserRole();
+    userRole.roleId = 2;
+    userRole.userId = Number(result.identifiers[0].id);
+    await this.userRoleRepository.insert(userRole);
   }
 
-  async login(body: any): Promise<BaseResponse> {
+  async login(body: any): Promise<string> {
     // 判断用户是否已经存在
     const findUser = await this.userRepository.findOne({ email: body.email });
     if (findUser) {
@@ -71,13 +53,12 @@ export class UserService implements UserInterface {
         const roles: string[] = [];
         // @ts-ignore
         data.roles.forEach(role => roles.push(role.name));
-        const token = this.tokenService.sign({ ...findUser, roles });
-        return new BaseResponse(ResponseCode.SUCCESS, token);
+        return this.tokenService.sign({ ...findUser, roles });
       } else {
-        return new BaseResponse(ResponseCode.LOGIN_FAILED);
+        throw new AppError(AppErrorTypeEnum.WRONG_EMAIL_OR_PASSWORD);
       }
     } else {
-      return new BaseResponse(ResponseCode.LOGIN_FAILED);
+      throw new AppError(AppErrorTypeEnum.WRONG_EMAIL_OR_PASSWORD);
     }
   }
 }

@@ -35,8 +35,6 @@ export class TokenService {
       (data ? (
         '$' + data.id +
         '$' + data.email +
-        '$' + data.isActive +
-        '$' + data.isSuperuser +
         (data.roles ? data.roles.map(role => '$' + role) : '')
       ) : '');
   }

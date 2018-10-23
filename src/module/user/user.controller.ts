@@ -4,21 +4,16 @@ import {
   Controller,
   Get,
   Post,
-  UseInterceptors,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
-import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
-import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
 import { UserService } from './user.service';
 import { User } from '../../entity/user.entity';
-import { BaseResponse } from '../../dto/base.response';
 import { UserRole } from '../../entity/userRole.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Role } from '../../entity/role.entity';
 
-@Catch()
 @Controller('user')
-@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -36,18 +31,15 @@ export class UserController {
     return data;
   }
 
-  @Get('/all')
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll();
-  }
-
   @Post('/create')
-  async create(@Body() body): Promise<BaseResponse> {
-    return await this.userService.createUser(body);
+  async create(@Res() res, @Body() user: User) {
+    await this.userService.createUser(user);
+    return res.status(HttpStatus.OK).send();
   }
 
   @Post('/login')
-  async login(@Body() body): Promise<BaseResponse> {
-    return await this.userService.login(body);
+  async login(@Res() res, @Body() body) {
+    const token = await this.userService.login(body);
+    return res.status(HttpStatus.OK).send(token);
   }
 }

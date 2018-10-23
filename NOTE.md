@@ -52,3 +52,43 @@ log4js配置中的file和dateFile，file是根据日志文件大小重新创建�
 #### 5.debug使用
 先创建Attach node or chrome的debug，并监听9229
 接着使用npm run start:debug来启动debug，ws会暴露在9229
+
+#### 6.如何使用拦截器？
+先把拦截器Interceptors 造好
+然后在相应的控制器的类上添加注解
+那么在执行之前和执行执行，都会触发拦截器
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
+
+#### 7.jwt使用过程问到的问题
+在官方提供的示例中，jwt确实能正常使用，并且也能话request中携带上相应的user信息，但是未找到方法把jwt和role角色
+守卫相结合，因为在结合的canActivate中，无法获取用户的信息，就无法检查用户的角色。
+
+所以我便选择了另一个jwt库jsonwebtoken，使用这个库，能像其他语言那样，加密，解密jwt的token,此时就可以把role角色
+结合进来了。
+
+#### 8.error异常处理
+所有的异常都统计由AppError来创建，并由  app.useGlobalFilters(new HttpExceptionFilter()); 来处理
+
+#### 9.所有的数据验证由管道来验证
+app.useGlobalPipes(new ValidationPipe());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

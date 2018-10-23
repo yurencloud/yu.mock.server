@@ -1,10 +1,8 @@
-import {
-  ExecutionContext,
-  Injectable,
-  CanActivate,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { TokenService } from './token.service';
+import { AppError } from '../error/AppError';
+import { AppErrorTypeEnum } from '../error/AppErrorTypeEnum';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -20,8 +18,11 @@ export class AccessGuard implements CanActivate {
     if (jwtToken && jwtToken.indexOf('Bearer') === 0) {
       let token = jwtToken.substr(6);
       token = token.trim();
-      if (token && this.tokenService.verify(token)) {
+      try {
+        this.tokenService.verify(token);
         req.user = this.tokenService.decode(token);
+      } catch (e) {
+        throw new AppError(AppErrorTypeEnum.TOKEN_INVALID);
       }
     } else {
       return false;

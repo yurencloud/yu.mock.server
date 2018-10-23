@@ -6,12 +6,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsNotEmpty()
   @Length(6, 20)
   @Column()
   password: string;
 
-  @IsNotEmpty()
   @IsEmail()
   @Column()
   email: string;
