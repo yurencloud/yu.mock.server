@@ -7,18 +7,30 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiModelProperty()
-  @Length(6, 20)
+  @ApiModelProperty({description: '密码'})
   @Column()
   password: string;
 
-  @ApiModelProperty()
-  @IsEmail()
+  @ApiModelProperty({description: '昵称'})
   @Column()
-  email: string;
+  name: string;
+
+  @ApiModelProperty({description: '头像'})
+  @Column()
+  logo: string;
+
+  @ApiModelProperty({description: '账号'})
+  @Column()
+  account: string;
 
   @Column()
-  phone: string;
+  mobile: string;
+
+  @Column()
+  needChangePassword: boolean;
+
+  @Column()
+  userCode: string;
 
   @Column({ type: 'datetime' })
   lastPasswordResetDate: Date;

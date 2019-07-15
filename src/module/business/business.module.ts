@@ -1,5 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { UserController } from './user.controller';
+import { BusinessController } from './business.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../entity/user.entity';
 import { Logger } from '../../common/log/logger.log';
@@ -11,11 +11,11 @@ import { Permission } from '../../entity/permission.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserRole, Merchant, Permission]),
+    TypeOrmModule.forFeature([]),
   ],
-  controllers: [UserController],
-  providers: [TokenService, Logger, ConfigService],
+  controllers: [BusinessController],
+  providers: [Logger],
 })
 
-export class UserModule {
+export class BusinessModule {
 }
