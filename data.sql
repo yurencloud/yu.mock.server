@@ -41,3 +41,19 @@ values
   (2, 'SGSJ000145', 'business'),
   (3, 'SGSJ000145', 'business.order');
 
+
+insert into `order` (id, startTime, endTime, skuCode, supplierSkuCode, supplierOrderNo, mobile, name, star, status, productImage, productName, tag, info, price, amount, message, remark, deliveryTime, merchantCode)
+values
+  (1, now(), now(), 'SKU001', 'SSC001', 'NO0001','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (2, now(), now(), 'SKU002', 'SSC002', 'NO0002','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (3, now(), now(), 'SKU003', 'SSC003', 'NO0003','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (4, now(), now(), 'SKU004', 'SSC004', 'NO0004','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (5, now(), now(), 'SKU005', 'SSC005', 'NO0005','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (6, now(), now(), 'SKU006', 'SSC006', 'NO0006','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (7, now(), now(), 'SKU007', 'SSC007', 'NO0007','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (8, now(), now(), 'SKU008', 'SSC008', 'NO0008','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (9, now(), now(), 'SKU009', 'SSC009', 'NO0009','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (10, now(), now(), 'SKU010', 'SSC010', 'NO00010','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (11, now(), now(), 'SKU011', 'SSC011', 'NO0011','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145'),
+  (12, now(), now(), 'SKU012', 'SSC012', 'NO0012','15757130092', '王乐城', 1, 1, 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', '华为手机', '售后中', '内存：64G', 6000.00, 1, '留言', '备注', now(), 'SGSJ000145');
+

@@ -25,8 +25,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TokenService } from '../../common/guards/token.service';
 
-@ApiUseTags('user')
-@Controller('/merchant-gw/merchant/user')
+@ApiUseTags('用户')
+@Controller('merchant-mock/merchant/user')
 export class UserController {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,

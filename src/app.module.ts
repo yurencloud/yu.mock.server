@@ -5,17 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { UserModule } from './module/user/user.module';
 import { ConfigModule } from './common/config/config.module';
-import { TokenService } from './common/guards/token.service';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
-import { BusinessController } from './module/business/business.controller';
+import { OrderModule } from './module/order/order.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     UserModule,
+    OrderModule,
     ConfigModule,
   ],
-  controllers: [AppController, BusinessController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
