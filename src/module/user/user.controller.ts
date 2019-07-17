@@ -26,7 +26,7 @@ import { Repository } from 'typeorm';
 import { TokenService } from '../../common/guards/token.service';
 
 @ApiUseTags('用户')
-@Controller('merchant-mock/merchant/user')
+@Controller('merchant-mock/merchant')
 export class UserController {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -38,7 +38,7 @@ export class UserController {
   }
 
   @ApiOperation({ title: '创建用户' })
-  @Post('/create')
+  @Post('/user/create')
   async create(@Res() res, @Body() user: User) {
     // 判断用户是否已经存在
     const findUser = await this.userRepository.findOne({ account: user.account });
@@ -54,7 +54,7 @@ export class UserController {
   }
 
   @ApiOperation({ title: '用户登录' })
-  @Post('/accountLogin')
+  @Post('/user/accountLogin')
   async login(@Res() res, @Body() user: LoginReq) {
     // 判断用户是否已经存在
     const findUser = await this.userRepository.findOne({ account: user.accountName });
@@ -79,7 +79,7 @@ export class UserController {
   }
 
   @ApiOperation({ title: '获取商家列表' })
-  @Post('/page/manager/merchants')
+  @Post('/user/page/manager/merchants')
   async managerMerchants(@Res() res, @Body() req: BasePageReq) {
     const data = await this.merchantRepository
       .createQueryBuilder('merchant')
@@ -92,7 +92,7 @@ export class UserController {
   }
 
   @ApiOperation({ title: '获取用户权限' })
-  @Get('/merchant/privilege/resources')
+  @Get('/user/merchant/privilege/resources')
   async getUserPermission(@Res() res, @Request() req) {
     const data = await this.permissionRepository
       .createQueryBuilder('permission')
@@ -100,5 +100,48 @@ export class UserController {
       .getMany();
 
     return res.status(HttpStatus.OK).send(new BaseResult(data));
+  }
+
+  @ApiOperation({ title: '获取用户列表' })
+  @Post('/account/page/accountInfos')
+  async accountInfosPage(@Res() res, @Request() req) {
+    const data = await this.userRepository
+      .createQueryBuilder('user')
+      .getManyAndCount();
+
+    return res.status(HttpStatus.OK).send(new BaseResult(new BasePageResp(data[0], data[1], req)));
+  }
+
+  @ApiOperation({ title: '创建用户' })
+  @Post('/account/create')
+  async accountCreate(@Res() res, @Body() user: User) {
+    user.userCode = 'USER' + new Date().getTime();
+    await this.userRepository.insert(user);
+
+    return res.status(HttpStatus.OK).send(new BaseResp());
+  }
+
+  @ApiOperation({ title: '根据用户code获取用户信息' })
+  @Post('/account/getInfoByUserCode')
+  async getInfoByUserCode(@Res() res, @Body() user: User) {
+    const result = await this.userRepository.findOne({ userCode: user.userCode});
+
+    return res.status(HttpStatus.OK).send(new BaseResult(result));
+  }
+
+  @ApiOperation({ title: '编辑用户' })
+  @Post('/account/modifyInfo')
+  async accountModify(@Res() res, @Body() user: User) {
+    await this.userRepository.update({ userCode: user.userCode}, user);
+
+    return res.status(HttpStatus.OK).send(new BaseResp());
+  }
+
+  @ApiOperation({ title: '删除用户' })
+  @Post('/account/delete')
+  async accountDelete(@Res() res, @Body() user: User) {
+    await this.userRepository.delete({ userCode: user.userCode});
+
+    return res.status(HttpStatus.OK).send(new BaseResp());
   }
 }

@@ -7,6 +7,7 @@ import { UserModule } from './module/user/user.module';
 import { ConfigModule } from './common/config/config.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { OrderModule } from './module/order/order.module';
+import { CommonModule } from './module/common/common.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { OrderModule } from './module/order/order.module';
     UserModule,
     OrderModule,
     ConfigModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

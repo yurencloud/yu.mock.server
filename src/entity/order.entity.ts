@@ -46,30 +46,6 @@ export class Order {
   @Column()
   status: number;
 
-  @ApiModelProperty({ description: '产品图片' })
-  @Column()
-  productImage: string;
-
-  @ApiModelProperty({ description: '产品名称' })
-  @Column()
-  productName: string;
-
-  @ApiModelProperty({ description: '产品标签' })
-  @Column()
-  tag: string;
-
-  @ApiModelProperty({ description: '产品信息' })
-  @Column()
-  info: string;
-
-  @ApiModelProperty({ description: '单价' })
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
-  price: number;
-
-  @ApiModelProperty({ description: '数量' })
-  @Column()
-  amount: number;
-
   @ApiModelProperty({ description: '用户留言' })
   @Column()
   message: string;
@@ -81,4 +57,6 @@ export class Order {
   @ApiModelProperty({ description: '发货时间' })
   @Column()
   deliveryTime: Date;
+
+  products: any;
 }

@@ -4,8 +4,8 @@ export class BasePageResp {
   constructor(data: any, total: number, req: BasePageReq) {
     this.data = data;
     this.totalNum = total;
-    this.pageSize = req.pageSize;
-    this.currentPage = req.page;
+    this.pageSize = Number(req.pageSize);
+    this.currentPage = Number(req.page);
   }
   currentPage: number;
   data: any;
