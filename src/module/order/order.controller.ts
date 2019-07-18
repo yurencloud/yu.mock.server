@@ -46,7 +46,7 @@ export class OrderController {
     const sql = this.getQueryParam(req.query, ['skuCode', 'mobile']);
 
     const data = await this.orderRepository
-      .createQueryBuilder('permission')
+      .createQueryBuilder('order')
       .where('merchantCode = :code ' + sql, { ...req.query, code: 'SGSJ000145' })
       .skip((req.query.page - 1) * req.query.pageSize)
       .take(req.query.pageSize)
