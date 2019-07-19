@@ -218,7 +218,7 @@ export class OrderModule {
 在`app.module.ts`中引入`order.module.ts`
 
 /src/app.module.ts
-```
+```typescript
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -264,7 +264,7 @@ export class AppModule {
 1. 全局调用mock接口
 
 在vue.config.js中添加配置
-```
+```javascript
     devServer: {
         port: 1025,
         proxy: {
@@ -277,7 +277,7 @@ export class AppModule {
 ```
 
 2. 以真实接口为主，部分调用mock接口
-```
+```javascript
     devServer: {
         port: 1025,
         proxy: {
@@ -296,7 +296,7 @@ export class AppModule {
     },
 ```
 使用时，请在接口处添加配置`mockServer: true`
-```
+```javascript
 const getOrders = {
     url: '/merchant/order/list',
     method: 'get',
@@ -319,7 +319,7 @@ values
 1.2 通过orm批量插入
 
 为了让数据更真实，可以使用mockjs
-```
+```typescript
   @ApiOperation({ title: '生成1万条订单' })
   @Get('/create')
   async orderCreate() {
@@ -340,7 +340,7 @@ values
 1.3 不使用数据库，直接返回json数据
 
 可以使用mockjs
-```
+```typescript
   @ApiOperation({ title: '获取1条订单信息' })
   @Get('/create')
   async orderCreate() {
@@ -364,7 +364,7 @@ values
 1条订单中，包含2个商品的购买，那么，一张表就无法获取1条订单和该订单下的2个商品。
 此时，我们只能再创建一个订单商品表，一对多--一条订单对应多条订单商品。
 如果订单商品并不重要，只是展示用，那么我们可以取巧,获取订单列表后，遍历，插入订单商品信息。这样就省去创建订单商品表，省去一对多查询逻辑！
-```
+```typescript
     const data = await this.orderRepository
       .createQueryBuilder('order')
       .where('merchantCode = :code ' + sql, { ...req.query, code: 'SGSJ000145' })
@@ -390,7 +390,7 @@ values
 使用mock适配器，将数据修改成和后端一致。  
 `yu.to`的使用方法，请参考链接：https://github.com/yurencloud/yu.to
 
-```
+```javascript
 const to = require('yu.to')
 
 const getOrders = {
@@ -412,4 +412,44 @@ const getOrders = {
 ##### 4. 多人合作开发，共享mock接口
 4.1 各自拉取和同步mock server代码，共用一个数据库，共用一个oss文件上传接口 
 
+#### <a name="4">四、运行 Mock Server Demo 示例</a>
+##### 1. 克隆示例代码,到本地
+```shell
+git clone https://github.com/yurencloud/yu.mock.server.git
+```
 
+##### 2. 安装依赖
+```shell
+npm install
+```
+
+##### 3. 修改数据库配置
+复制`ormconfig.json.example`，并重命名为`ormconfig.json`,然后编辑`ormconfig.json`
+```shell
+cp ormconfig.json.example ormconfig.json
+vi ormconfig.json
+```
+```json
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "secret",
+  "database": "blog",
+  "entities": ["src/**/**.entity{.ts,.js}"],
+  "synchronize": true
+}
+```
+##### 4. 启动项目
+每次启动，都会根据`/src/entity/`下的实体类，自动创建或更新mysql数据表
+``` shell
+npm run dev
+```
+修改代码后，会自动热更新
+
+##### 5. 插入部分初始化数据
+根目录下有数据初始化脚本 `data.sql`
+
+##### 6. 至此已经启动Mock Server
+访问`http://localhost:3000/swagger-ui.html`,可查看Mock Server的mock接口文档
