@@ -66,8 +66,49 @@ DATABASE | 下文中提到的`DATABASE`均指mysql
 
 不使用mock
 
+#### <a name="4">二、运行 Mock Server Demo 示例</a>
+##### 1. 克隆示例代码,到本地
+```shell
+git clone xxxx
+```
 
-#### 二、详细使用教程
+##### 2. 安装依赖
+```shell
+npm install
+```
+
+##### 3. 修改数据库配置
+复制`ormconfig.json.example`，并重命名为`ormconfig.json`,然后编辑`ormconfig.json`
+```shell
+cp ormconfig.json.example ormconfig.json
+vi ormconfig.json
+```
+```json
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "secret",
+  "database": "blog",
+  "entities": ["src/**/**.entity{.ts,.js}"],
+  "synchronize": true
+}
+```
+##### 4. 启动项目
+每次启动，都会根据`/src/entity/`下的实体类，自动创建或更新mysql数据表
+``` shell
+npm run dev
+```
+修改代码后，会自动热更新
+
+##### 5. 插入部分初始化数据
+根目录下有数据初始化脚本 `data.sql`
+
+##### 6. 至此已经启动Mock Server
+访问`http://localhost:3000/swagger-ui.html`,可查看Mock Server的mock接口文档
+
+#### 三、详细使用教程
 
 > 以下流程以商家中心，登录、商家订单列表、搜索订单、账号列表、创建账号、编辑账号、删除账号功能为例。
 
@@ -306,7 +347,7 @@ const getOrders = {
 至此mock就完成了，你只要在数据库中添加几条假的订单数据，就能通过mock接口获取数据。
 
 
-### 三、进阶用法
+### 四、进阶用法
 
 ##### 1. 如何造数据？
 1.1 直接sql插入
@@ -412,44 +453,3 @@ const getOrders = {
 ##### 4. 多人合作开发，共享mock接口
 4.1 各自拉取和同步mock server代码，共用一个数据库，共用一个oss文件上传接口 
 
-#### <a name="4">四、运行 Mock Server Demo 示例</a>
-##### 1. 克隆示例代码,到本地
-```shell
-git clone https://github.com/yurencloud/yu.mock.server.git
-```
-
-##### 2. 安装依赖
-```shell
-npm install
-```
-
-##### 3. 修改数据库配置
-复制`ormconfig.json.example`，并重命名为`ormconfig.json`,然后编辑`ormconfig.json`
-```shell
-cp ormconfig.json.example ormconfig.json
-vi ormconfig.json
-```
-```json
-{
-  "type": "mysql",
-  "host": "localhost",
-  "port": 3306,
-  "username": "root",
-  "password": "secret",
-  "database": "blog",
-  "entities": ["src/**/**.entity{.ts,.js}"],
-  "synchronize": true
-}
-```
-##### 4. 启动项目
-每次启动，都会根据`/src/entity/`下的实体类，自动创建或更新mysql数据表
-``` shell
-npm run dev
-```
-修改代码后，会自动热更新
-
-##### 5. 插入部分初始化数据
-根目录下有数据初始化脚本 `data.sql`
-
-##### 6. 至此已经启动Mock Server
-访问`http://localhost:3000/swagger-ui.html`,可查看Mock Server的mock接口文档
