@@ -27,14 +27,14 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
-    .setTitle('Yurencloud')
-    .setDescription('Yurencloud Blog Example')
+    .setTitle('Mock Server')
+    .setDescription('Mock Server 前端Mock接口和数据方案 V1.0')
     .setVersion('1.0')
     .addTag('nestjs')
     .addBearerAuth('Authorization', 'header')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger-ui.html', app, document);
 
   app.useStaticAssets(join(__dirname, 'public'), {
     prefix: '/static/',
