@@ -69,7 +69,7 @@ DATABASE | 下文中提到的`DATABASE`均指mysql
 #### <a name="4">二、运行 Mock Server Demo 示例</a>
 ##### 1. 克隆示例代码,到本地
 ```shell
-git clone xxxx
+git clone https://github.com/yurencloud/yu.mock.server.git
 ```
 
 ##### 2. 安装依赖
