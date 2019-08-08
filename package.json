@@ -38,7 +38,8 @@
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "typeorm": "^0.2.8",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "passport": "^0.4.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
