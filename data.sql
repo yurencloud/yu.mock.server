@@ -1,3 +1,5 @@
+
+-- 测试用户的账号为 mackwang 密码为 secret
 insert into user (id, password, name, logo, account, mobile, needChangePassword, userCode, lastPasswordResetDate, createdAt, updatedAt)
 values
 (1, '$2b$10$bt.jm3Opex8oC9r/B/F9ruvg2KdzerOH07QMhBnAOOwHPSg.7yLny', 'tom', 'http://www.yurencloud.com/_nuxt/img/avatar.902cc14.png', 'mackwang', '15757130092', 0, 'USER3303003030123', now(), now(), now()),
