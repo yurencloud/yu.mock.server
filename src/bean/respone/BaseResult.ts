@@ -12,6 +12,9 @@ export class BaseResult extends BaseResp {
     }
     this.code = resultCode.code;
     this.message = resultCode.message;
+    if (data) {
+      console.log('code: ', resultCode.code, '; message: ', resultCode.message, '; response: ', typeof data === 'object' ? JSON.stringify(data) : data);
+    }
   }
 
   data: any;

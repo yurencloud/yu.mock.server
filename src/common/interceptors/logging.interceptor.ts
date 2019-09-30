@@ -1,6 +1,6 @@
 import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -8,7 +8,10 @@ export class LoggingInterceptor implements NestInterceptor {
     context: ExecutionContext,
     call$: Observable<any>,
   ): Observable<any> {
-    return call$.pipe(tap(() => {
+    return call$.pipe(tap((c) => {
+    }), map((data) => {
+      console.log('query:', data.req.query);
+      return data;
     }));
   }
 }
